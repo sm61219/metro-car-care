@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Metro Car Care — Multi-Brand Auto Workshop in ECIL, Secunderabad</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    .hero-gradient {
+      background: radial-gradient(circle at 85% 20%, rgba(245, 158, 11, 0.18), transparent 45%),
+                  linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #0f172a 100%);
+    }
+    .card-hover {
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+    .card-hover:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px -6px rgba(15, 23, 42, 0.12);
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased selection:bg-amber-500 selection:text-slate-950">
+
+  <!-- FREELANCER PITCH MODE TOOLBAR (Toggleable for Client Presentations) -->
+  <div id="pitchToolbar" class="bg-indigo-950 text-indigo-100 border-b border-indigo-800 px-4 py-2.5 text-xs sm:text-sm">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-2.5 flex-wrap">
+        <span class="inline-flex items-center gap-1.5 bg-amber-400 text-slate-950 font-bold px-2.5 py-0.5 rounded-full text-xs uppercase tracking-wider">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+          Freelancer Pitch Demo
+        </span>
+        <span class="text-indigo-200 hidden md:inline">Switch active ECIL lead profile:</span>
+        <div class="inline-flex rounded-lg bg-indigo-900/90 p-0.5 border border-indigo-700">
+          <button type="button" id="btnProfileMetro" onclick="switchGarageProfile('metro')" class="px-3 py-1 rounded-md font-semibold text-xs transition bg-amber-400 text-slate-950 shadow-sm">
+            Metro Car Care (4.9★ · 84 Reviews)
+          </button>
+          <button type="button" id="btnProfileGokul" onclick="switchGarageProfile('gokul')" class="px-3 py-1 rounded-md font-semibold text-xs transition text-indigo-200 hover:text-white">
+            Gokul Motors (4.4★ · 166 Reviews)
+          </button>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <button type="button" onclick="openPitchModal()" class="inline-flex items-center gap-1.5 bg-indigo-800 hover:bg-indigo-700 text-white font-medium px-3 py-1 rounded-lg border border-indigo-600 transition text-xs">
+          <i data-lucide="message-square-text" class="w-3.5 h-3.5 text-amber-300"></i>
+          View &amp; Copy WhatsApp Pitch
+        </button>
+        <button type="button" onclick="togglePitchToolbar(false)" class="inline-flex items-center gap-1 bg-slate-800 hover:bg-slate-700 text-slate-200 px-2.5 py-1 rounded-lg border border-slate-700 transition text-xs" title="Hide this bar when showing the screen to the business owner">
+          <i data-lucide="eye-off" class="w-3.5 h-3.5"></i>
+          Client View
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOATING RESTORE BUTTON FOR PITCH TOOLBAR (Hidden by default) -->
+  <button type="button" id="restorePitchBtn" onclick="togglePitchToolbar(true)" class="hidden fixed bottom-4 left-4 z-50 bg-indigo-950/90 hover:bg-indigo-900 text-amber-300 border border-indigo-700 shadow-lg px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 backdrop-blur-sm">
+    <i data-lucide="sliders-horizontal" class="w-3.5 h-3.5"></i>
+    Pitch Controls
+  </button>
+
+  <!-- STICKY HEADER -->
+  <header class="sticky top-0 z-40 bg-slate-900/95 backdrop-blur-md border-b border-slate-800 text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center font-extrabold text-lg shadow-sm" id="navLogoBadge">
+          MC
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span id="navBrandName" class="font-extrabold text-base sm:text-lg tracking-tight text-white">Metro Car Care</span>
+            <span id="navEstBadge" class="hidden sm:inline-block text-[11px] font-semibold bg-slate-800 text-amber-400 px-2 py-0.5 rounded-full border border-slate-700">Est. 2012</span>
+          </div>
+          <p id="navAreaSub" class="text-xs text-slate-400 truncate max-w-[200px] sm:max-w-none">Ayodhya Nagar Rd · AS Rao Nagar, ECIL</p>
+        </div>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300">
+        <button type="button" onclick="scrollToSection('servicesSection')" class="hover:text-amber-400 transition">Services &amp; Rates</button>
+        <button type="button" onclick="scrollToSection('estimatorSection')" class="hover:text-amber-400 transition">Cost Estimator</button>
+        <button type="button" onclick="scrollToSection('reviewsSection')" class="hover:text-amber-400 transition">Google Reviews</button>
+        <button type="button" onclick="scrollToSection('locationSection')" class="hover:text-amber-400 transition">Location &amp; Hours</button>
+      </nav>
+
+      <!-- Direct Call & WhatsApp CTAs -->
+      <div class="flex items-center gap-2">
+        <a id="headerCallLink" href="tel:+919398446424" class="inline-flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 text-white font-semibold px-3 py-2 rounded-xl border border-slate-700 text-xs sm:text-sm transition">
+          <i data-lucide="phone-call" class="w-4 h-4 text-amber-400"></i>
+          <span id="headerPhoneText" class="hidden sm:inline">093984 46424</span>
+          <span class="sm:hidden">Call</span>
+        </a>
+        <button type="button" onclick="scrollToSection('estimatorSection')" class="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-3.5 py-2 rounded-xl shadow-sm text-xs sm:text-sm transition">
+          <i data-lucide="message-circle" class="w-4 h-4"></i>
+          <span>Book on WhatsApp</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero-gradient text-white py-12 sm:py-16 lg:py-20 border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+        <!-- Hero Left Copy -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="inline-flex flex-wrap items-center gap-2 bg-slate-800/90 border border-slate-700/80 px-3.5 py-1.5 rounded-full text-xs sm:text-sm">
+            <span class="flex items-center gap-1 text-amber-400 font-bold">
+              <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+              <span id="heroRatingVal">4.9 / 5.0</span>
+            </span>
+            <span class="text-slate-400">•</span>
+            <span id="heroReviewCount" class="text-slate-200 font-medium">84 Verified Google Reviews</span>
+            <span class="text-slate-400">•</span>
+            <span id="heroOpenBadge" class="text-emerald-400 font-semibold">Open 7 Days in ECIL</span>
+          </div>
+
+          <h1 id="heroHeadline" class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight">
+            Trusted Multi-Brand Car Servicing &amp; Breakdown Repairs in <span class="text-amber-400">ECIL &amp; AS Rao Nagar</span>
+          </h1>
+
+          <p id="heroSubheadline" class="text-slate-300 text-base sm:text-lg leading-relaxed max-w-2xl">
+            Led by senior mechanic <strong class="text-white">Chinna Babu</strong> since 2012. We use 100% genuine spare parts with transparent diagnosis—from periodic oil service and car AC repair to urgent night-breakdown recovery.
+          </p>
+
+          <!-- Key Trust Badges -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-1">
+            <div class="bg-slate-800/60 border border-slate-700/70 rounded-xl p-3 flex items-start gap-2.5">
+              <i data-lucide="shield-check" class="w-5 h-5 text-amber-400 shrink-0 mt-0.5"></i>
+              <div>
+                <div class="font-bold text-xs sm:text-sm text-white">Genuine Spares</div>
+                <div class="text-xs text-slate-400">OEM parts &amp; clear bills</div>
+              </div>
+            </div>
+            <div class="bg-slate-800/60 border border-slate-700/70 rounded-xl p-3 flex items-start gap-2.5">
+              <i data-lucide="clock" class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5"></i>
+              <div>
+                <div class="font-bold text-xs sm:text-sm text-white" id="heroFeature2Title">Prompt Turnaround</div>
+                <div class="text-xs text-slate-400" id="heroFeature2Sub">Same-day periodic service</div>
+              </div>
+            </div>
+            <div class="col-span-2 sm:col-span-1 bg-slate-800/60 border border-slate-700/70 rounded-xl p-3 flex items-start gap-2.5">
+              <i data-lucide="Indian-rupee" class="w-5 h-5 text-amber-400 shrink-0 mt-0.5"></i>
+              <div>
+                <div class="font-bold text-xs sm:text-sm text-white">Fair Local Pricing</div>
+                <div class="text-xs text-slate-400">Services from ₹250 onwards</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Primary Action Buttons -->
+          <div class="flex flex-wrap items-center gap-3 pt-2">
+            <button type="button" onclick="scrollToSection('estimatorSection')" class="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-6 py-3.5 rounded-xl shadow-lg text-sm sm:text-base transition">
+              <i data-lucide="calculator" class="w-5 h-5"></i>
+              Calculate Service Cost &amp; Book
+            </button>
+            <a id="heroWhatsAppDirect" href="https://wa.me/919398446424?text=Hi%20Metro%20Car%20Care%2C%20I%20would%20like%20to%20enquire%20about%20car%20servicing%20in%20ECIL." target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-white font-semibold px-5 py-3.5 rounded-xl border border-slate-600 text-sm sm:text-base transition">
+              <i data-lucide="message-circle" class="w-5 h-5 text-emerald-400"></i>
+              WhatsApp Mechanic Now
+            </a>
+          </div>
+        </div>
+
+        <!-- Hero Right Quick Info & Emergency Card -->
+        <div class="lg:col-span-5">
+          <div class="bg-slate-900/90 border border-slate-700 rounded-2xl p-6 shadow-2xl space-y-5">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+              <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-amber-400">Workshop Quick Card</span>
+                <h2 id="cardGarageTitle" class="text-xl font-bold text-white mt-0.5">Metro Car Care · ECIL</h2>
+              </div>
+              <div class="bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                Active Workshop
+              </div>
+            </div>
+
+            <div class="space-y-3.5 text-sm">
+              <div class="flex items-start gap-3">
+                <i data-lucide="map-pin" class="w-5 h-5 text-amber-400 shrink-0 mt-0.5"></i>
+                <div>
+                  <div class="text-xs text-slate-400 font-medium">Workshop Address &amp; Landmark</div>
+                  <div id="cardAddress" class="text-slate-100 font-medium mt-0.5">
+                    Plot No. 155, 1-19-79, Ayodhya Nagar Rd, Trimulgherry - ECIL Rd (Near Hi-Tension Road), Lakshmipuram Colony, AS Rao Nagar, Secunderabad 500062
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3">
+                <i data-lucide="user-check" class="w-5 h-5 text-amber-400 shrink-0 mt-0.5"></i>
+                <div>
+                  <div class="text-xs text-slate-400 font-medium">Primary Point of Contact</div>
+                  <div id="cardSpecialist" class="text-slate-100 font-medium mt-0.5">
+                    Chinna Babu (Lead Multi-Brand Mechanic)
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3">
+                <i data-lucide="clock-4" class="w-5 h-5 text-amber-400 shrink-0 mt-0.5"></i>
+                <div>
+                  <div class="text-xs text-slate-400 font-medium">Working Hours</div>
+                  <div id="cardHours" class="text-slate-100 font-medium mt-0.5">
+                    Mon–Sat: 8:00 AM – 9:00 PM · Sun: 9:00 AM – 5:00 PM
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Featured Verbatim Review Snippet -->
+            <div class="bg-slate-800/80 border border-slate-700/80 rounded-xl p-4">
+              <div class="flex items-center gap-1 text-amber-400 text-xs font-bold mb-1">
+                <i data-lucide="quote" class="w-4 h-4"></i>
+                <span>Verified Google Maps Customer Review</span>
+              </div>
+              <p id="cardQuoteText" class="text-xs sm:text-sm text-slate-200 italic leading-relaxed">
+                "Our car broke down in the night, but Chinna was prompt in helping us middle of the night and got the car fixed in a day and he worked on a Sunday overtime to get it fixed, great commitment towards the job and flawless job done!"
+              </p>
+              <div id="cardQuoteMeta" class="text-[11px] text-slate-400 mt-2 font-medium">
+                — Google Maps Review · February 2026
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 pt-1">
+              <a id="cardCallBtn" href="tel:+919398446424" class="flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-white font-semibold py-2.5 px-4 rounded-xl border border-slate-600 text-xs sm:text-sm transition">
+                <i data-lucide="phone" class="w-4 h-4 text-amber-400"></i>
+                Call Workshop
+              </a>
+              <a id="cardMapsBtn" href="https://www.google.com/maps/search/?api=1&query=Metro+Car+Care+Ayodhya+Nagar+Rd+AS+Rao+Nagar+ECIL+Secunderabad" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 font-semibold py-2.5 px-4 rounded-xl border border-amber-500/30 text-xs sm:text-sm transition">
+                <i data-lucide="navigation" class="w-4 h-4"></i>
+                Get Directions
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES & VERIFIED RATE CARD SECTION -->
+  <section id="servicesSection" class="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-amber-600 bg-amber-100 px-3 py-1 rounded-full">Transparent Pricing</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">Service Catalog &amp; Starting Rates</h2>
+        <p class="text-slate-600 text-sm sm:text-base mt-1">
+          Published local starting rates for multi-brand hatchbacks, sedans, and SUVs. Select any service to build your instant estimate.
+        </p>
+      </div>
+
+      <!-- Search & Category Filter Controls -->
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+        <div class="relative">
+          <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+          <input
+            type="text"
+            id="serviceSearchInput"
+            oninput="handleServiceSearch(this.value)"
+            placeholder="Search AC, oil, denting, clutch..."
+            class="pl-9 pr-4 py-2 bg-white border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 w-full sm:w-60"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Category Pills -->
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+      <div class="flex flex-wrap items-center gap-2" id="serviceCategoryPills">
+        <button type="button" onclick="setServiceCategory('all')" data-cat="all" class="cat-pill px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-900 text-white shadow-sm">
+          All Services (10)
+        </button>
+        <button type="button" onclick="setServiceCategory('Routine & Wash')" data-cat="Routine & Wash" class="cat-pill px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-white text-slate-700 border border-slate-200 hover:bg-slate-100">
+          Periodic Service &amp; Wash
+        </button>
+        <button type="button" onclick="setServiceCategory('Mechanical & AC')" data-cat="Mechanical & AC" class="cat-pill px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-white text-slate-700 border border-slate-200 hover:bg-slate-100">
+          Mechanical, AC &amp; Clutch
+        </button>
+        <button type="button" onclick="setServiceCategory('Body, Electrical & Tyres')" data-cat="Body, Electrical & Tyres" class="cat-pill px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-white text-slate-700 border border-slate-200 hover:bg-slate-100">
+          Denting, Battery &amp; Tyres
+        </button>
+      </div>
+
+      <div class="text-xs sm:text-sm font-medium text-slate-600">
+        Selected for Estimate: <span id="selectedCountBadge" class="font-bold text-amber-600">2 services</span>
+      </div>
+    </div>
+
+    <!-- Dynamic Service Grid -->
+    <div id="servicesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+  </section>
+
+  <!-- INTERACTIVE COST ESTIMATOR & WHATSAPP BOOKING SECTION -->
+  <section id="estimatorSection" class="py-12 sm:py-16 bg-slate-900 text-white border-y border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl mb-10">
+        <span class="text-xs font-bold uppercase tracking-wider text-amber-400 bg-amber-500/10 border border-amber-500/30 px-3 py-1 rounded-full">
+          Interactive Estimator &amp; Instant WhatsApp Booking
+        </span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold mt-3">Calculate Your Estimate &amp; Book a Slot</h2>
+        <p class="text-slate-300 text-sm sm:text-base mt-1">
+          Choose your car segment and required services below. Send your inquiry directly to <strong id="estimatorGarageName" class="text-amber-400">Metro Car Care</strong> on WhatsApp for priority scheduling.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <!-- Left Column: Vehicle Type & Service Checklist -->
+        <div class="lg:col-span-7 bg-slate-800/70 border border-slate-700 rounded-2xl p-6 space-y-6">
+          <!-- Step 1: Vehicle Segment -->
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-amber-400 mb-3">
+              1. Select Your Vehicle Segment
+            </label>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3" id="vehicleSegmentButtons">
+              <button type="button" onclick="setVehicleSegment('hatchback')" data-seg="hatchback" class="seg-btn p-3.5 rounded-xl border text-left transition bg-amber-500 text-slate-950 border-amber-400 font-bold">
+                <div class="flex items-center justify-between">
+                  <span>Hatchback</span>
+                  <span class="text-xs px-2 py-0.5 rounded bg-slate-950/15">1.0x Base</span>
+                </div>
+                <div class="text-xs mt-1 opacity-80 font-medium">Swift, i20, Altroz, WagonR</div>
+              </button>
+              <button type="button" onclick="setVehicleSegment('sedan')" data-seg="sedan" class="seg-btn p-3.5 rounded-xl border text-left transition bg-slate-900/70 text-slate-200 border-slate-700 hover:border-slate-500">
+                <div class="flex items-center justify-between font-bold">
+                  <span>Sedan / Compact SUV</span>
+                  <span class="text-xs px-2 py-0.5 rounded bg-slate-800 text-amber-400">1.15x</span>
+                </div>
+                <div class="text-xs mt-1 text-slate-400">Dzire, City, Verna, Brezza, Nexon</div>
+              </button>
+              <button type="button" onclick="setVehicleSegment('suv')" data-seg="suv" class="seg-btn p-3.5 rounded-xl border text-left transition bg-slate-900/70 text-slate-200 border-slate-700 hover:border-slate-500">
+                <div class="flex items-center justify-between font-bold">
+                  <span>SUV / MPV</span>
+                  <span class="text-xs px-2 py-0.5 rounded bg-slate-800 text-amber-400">1.35x</span>
+                </div>
+                <div class="text-xs mt-1 text-slate-400">Innova, Creta, Ertiga, Endeavour</div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 2: Quick Service Checklist -->
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <label class="block text-xs font-bold uppercase tracking-wider text-amber-400">
+                2. Toggle Services to Include in Estimate
+              </label>
+              <button type="button" onclick="clearSelectedServices()" class="text-xs text-slate-400 hover:text-white underline">
+                Reset Selection
+              </button>
+            </div>
+            <div id="estimatorChecklist" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-80 overflow-y-auto pr-1"></div>
+          </div>
+        </div>
+
+        <!-- Right Column: Live Estimate Summary & WhatsApp Booking Form -->
+        <div class="lg:col-span-5 bg-slate-800 border border-slate-700 rounded-2xl p-6 space-y-5 shadow-xl">
+          <div class="border-b border-slate-700 pb-4 flex items-center justify-between">
+            <div>
+              <div class="text-xs text-slate-400 font-medium">Estimated Starting Labor &amp; Service Cost</div>
+              <div id="liveEstimateTotal" class="text-3xl font-extrabold text-amber-400 mt-0.5">₹1,250 onwards</div>
+            </div>
+            <div class="text-right">
+              <span id="liveVehicleBadge" class="inline-block bg-slate-900 text-slate-200 border border-slate-700 px-3 py-1 rounded-lg text-xs font-semibold">
+                Hatchback (1.0x)
+              </span>
+            </div>
+          </div>
+
+          <!-- Selected Items Mini List -->
+          <div>
+            <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Selected Services Breakdown</div>
+            <div id="estimateBreakdownList" class="space-y-1.5 text-xs sm:text-sm max-h-40 overflow-y-auto"></div>
+            <p class="text-[11px] text-slate-400 mt-2">
+              *Final quote depends on exact spare parts brand (OEM) and physical inspection at the workshop.
+            </p>
+          </div>
+
+          <!-- Booking Form Inputs -->
+          <div class="space-y-3 pt-2 border-t border-slate-700">
+            <div class="text-xs font-bold uppercase tracking-wider text-amber-400">
+              3. Your Vehicle &amp; Contact Details
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label for="custName" class="block text-xs text-slate-300 mb-1">Your Name *</label>
+                <input type="text" id="custName" placeholder="e.g., Ramesh Kumar" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:outline-none focus:border-amber-400" />
+              </div>
+              <div>
+                <label for="custPhone" class="block text-xs text-slate-300 mb-1">Mobile Number *</label>
+                <input type="tel" id="custPhone" placeholder="e.g., 98480 12345" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:outline-none focus:border-amber-400" />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label for="carModel" class="block text-xs text-slate-300 mb-1">Car Make &amp; Model *</label>
+                <input type="text" id="carModel" placeholder="e.g., Hyundai i20 / Honda Jazz" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:outline-none focus:border-amber-400" />
+              </div>
+              <div>
+                <label for="serviceMode" class="block text-xs text-slate-300 mb-1">Service Preference</label>
+                <select id="serviceMode" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:outline-none focus:border-amber-400">
+                  <option value="Workshop Drop-In (ECIL)">Workshop Drop-In (ECIL)</option>
+                  <option value="Home Pickup & Drop Request">Home Pickup &amp; Drop Request</option>
+                  <option value="Urgent Breakdown Assistance">Urgent Breakdown Assistance</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label for="custNotes" class="block text-xs text-slate-300 mb-1">Issue Description or Preferred Time (Optional)</label>
+              <input type="text" id="custNotes" placeholder="e.g., Tomorrow morning 10 AM, check AC cooling & brake noise" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:outline-none focus:border-amber-400" />
+            </div>
+
+            <button type="button" onclick="handleWhatsAppBooking()" class="w-full flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 px-5 rounded-xl shadow-lg text-sm sm:text-base transition mt-2">
+              <i data-lucide="send" class="w-4 h-4"></i>
+              Send Estimate &amp; Book on WhatsApp
+            </button>
+          </div>
+
+          <!-- In-Page Booking Preview Box (Appears after clicking book) -->
+          <div id="bookingConfirmationBox" class="hidden bg-slate-900 border border-emerald-500/40 rounded-xl p-4 space-y-2.5">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-emerald-400 flex items-center gap-1.5">
+                <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+                WhatsApp Message Ready
+              </span>
+              <button type="button" onclick="copyGeneratedBookingText()" class="text-xs bg-slate-800 hover:bg-slate-700 text-amber-300 px-2.5 py-1 rounded-lg border border-slate-700 font-semibold">
+                Copy Message
+              </button>
+            </div>
+            <pre id="bookingMessagePreview" class="text-xs text-slate-300 whitespace-pre-wrap font-mono bg-slate-950/70 p-2.5 rounded-lg border border-slate-800 max-h-36 overflow-y-auto"></pre>
+            <a id="directWaLaunchLink" href="https://wa.me/919398446424" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-400 hover:underline">
+              Open WhatsApp Chat in New Tab &rarr;
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VERIFIED GOOGLE MAPS REVIEWS SECTION -->
+  <section id="reviewsSection" class="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full">Real Local Feedback</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">
+          What Car Owners in <span id="reviewsAreaLabel">ECIL &amp; AS Rao Nagar</span> Say
+        </h2>
+        <p id="reviewsSubLabel" class="text-slate-600 text-sm sm:text-base mt-1">
+          Rated 4.9/5 across 84 Google Maps reviews and 78 Justdial ratings for genuine spare parts and timely delivery.
+        </p>
+      </div>
+
+      <!-- Review Topic Filter -->
+      <div class="flex flex-wrap gap-2" id="reviewFilterPills">
+        <button type="button" onclick="setReviewFilter('all')" data-rfilter="all" class="rev-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-900 text-white">
+          All Highlights
+        </button>
+        <button type="button" onclick="setReviewFilter('Emergency & Promptness')" data-rfilter="Emergency & Promptness" class="rev-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-white text-slate-700 border border-slate-200 hover:bg-slate-100">
+          Emergency &amp; Promptness
+        </button>
+        <button type="button" onclick="setReviewFilter('Quality & Fair Pricing')" data-rfilter="Quality & Fair Pricing" class="rev-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-white text-slate-700 border border-slate-200 hover:bg-slate-100">
+          Quality &amp; Fair Pricing
+        </button>
+      </div>
+    </div>
+
+    <div id="reviewsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+  </section>
+
+  <!-- LOCATION, LANDMARK DIRECTIONS & WORKING HOURS SECTION -->
+  <section id="locationSection" class="py-12 sm:py-16 bg-white border-t border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+        <!-- Address & Landmark Guide Card -->
+        <div class="lg:col-span-7 bg-slate-50 border border-slate-200 rounded-2xl p-6 sm:p-8 flex flex-col justify-between space-y-6">
+          <div class="space-y-4">
+            <span class="text-xs font-bold uppercase tracking-wider text-amber-700 bg-amber-100 px-3 py-1 rounded-full">
+              Easy Landmark Navigation
+            </span>
+            <h2 id="locHeading" class="text-2xl sm:text-3xl font-extrabold text-slate-900">
+              Visit Metro Car Care in ECIL
+            </h2>
+            <p id="locLandmarkTip" class="text-slate-600 text-sm sm:text-base leading-relaxed">
+              First-time visitors sometimes find the inner lane tricky to spot—head towards <strong>Hi-Tension Road / Ayodhya Nagar Road</strong> off the Trimulgherry–ECIL main road in Lakshmipuram Colony, or tap below to launch turn-by-turn Google Maps navigation.
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+              <div class="bg-white p-4 rounded-xl border border-slate-200">
+                <div class="text-xs font-bold uppercase text-slate-400">Full Workshop Address</div>
+                <div id="locFullAddress" class="text-sm font-semibold text-slate-800 mt-1 leading-snug">
+                  Plot No. 155, 1-19-79, Ayodhya Nagar Rd, Trimulgherry - ECIL Rd, Lakshmipuram Colony, AS Rao Nagar, ECIL Post, Secunderabad, Telangana 500062
+                </div>
+              </div>
+              <div class="bg-white p-4 rounded-xl border border-slate-200">
+                <div class="text-xs font-bold uppercase text-slate-400">Direct Phone &amp; Directory Profile</div>
+                <div id="locPhoneDisplay" class="text-base font-extrabold text-slate-900 mt-1">+91 93984 46424</div>
+                <div class="mt-2 flex flex-wrap gap-2">
+                  <a id="locDirectoryLink" href="https://www.justdial.com/Hyderabad/Metro-Car-Care-Ecil/040PXX40-XX40-260426045013-N5D9_BZDET" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-indigo-600 hover:underline inline-flex items-center gap-1">
+                    <span>Verified Justdial Listing</span>
+                    <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-3 pt-2">
+            <a id="locGoogleMapsBtn" href="https://www.google.com/maps/search/?api=1&query=Metro+Car+Care+Ayodhya+Nagar+Rd+AS+Rao+Nagar+ECIL+Secunderabad" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold px-5 py-3 rounded-xl text-sm transition">
+              <i data-lucide="map-pin" class="w-4 h-4 text-amber-400"></i>
+              Open in Google Maps
+            </a>
+            <a id="locWhatsAppPinBtn" href="https://wa.me/919398446424?text=Hi%2C%20please%20share%20your%20exact%20Google%20Maps%20location%20pin%20for%20the%20workshop." target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-5 py-3 rounded-xl text-sm transition">
+              <i data-lucide="locate-fixed" class="w-4 h-4"></i>
+              Request Live Location Pin on WhatsApp
+            </a>
+          </div>
+        </div>
+
+        <!-- Hours & Payment Methods Card -->
+        <div class="lg:col-span-5 bg-slate-900 text-white rounded-2xl p-6 sm:p-8 flex flex-col justify-between space-y-6">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                <i data-lucide="calendar-clock" class="w-5 h-5 text-amber-400"></i>
+                Weekly Operating Hours
+              </h3>
+              <span class="text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2.5 py-0.5 rounded-full font-semibold">
+                Open Sundays
+              </span>
+            </div>
+
+            <div id="hoursTableContainer" class="space-y-2.5 text-sm border-t border-slate-800 pt-4"></div>
+          </div>
+
+          <div class="bg-slate-800/90 border border-slate-700 rounded-xl p-4 space-y-2">
+            <div class="text-xs font-bold uppercase tracking-wider text-amber-400">Accepted Payment Modes</div>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              UPI (Google Pay, PhonePe, Paytm), Cash, Debit Cards &amp; Direct Bank Transfer accepted upon vehicle delivery and test-drive approval.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-slate-950 text-slate-400 py-8 border-t border-slate-800 text-xs sm:text-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div>
+        <strong id="footerBrandName" class="text-white">Metro Car Care</strong> · Multi-Brand Car Servicing &amp; Repairs, ECIL, Secunderabad.
+      </div>
+      <div class="flex items-center gap-4">
+        <a id="footerJustdialLink" href="https://www.justdial.com/Hyderabad/Metro-Car-Care-Ecil/040PXX40-XX40-260426045013-N5D9_BZDET" target="_blank" rel="noopener noreferrer" class="hover:text-amber-400 transition">Justdial Profile</a>
+        <span>•</span>
+        <a id="footerCallLink" href="tel:+919398446424" class="hover:text-amber-400 transition">Call Workshop</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- FREELANCER WHATSAPP PITCH SCRIPT MODAL -->
+  <div id="pitchModal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white text-slate-900 rounded-2xl max-w-xl w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+      <div class="flex items-start justify-between gap-3 border-b border-slate-200 pb-3">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Freelancer Outreach Script</span>
+          <h3 id="pitchModalTitle" class="text-lg font-extrabold text-slate-900 mt-0.5">
+            WhatsApp Pitch for Metro Car Care (Chinna Babu)
+          </h3>
+        </div>
+        <button type="button" onclick="closePitchModal()" class="text-slate-400 hover:text-slate-700 p-1 rounded-lg">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <p class="text-xs text-slate-600">
+        Send this message on WhatsApp along with 2 screenshots or your hosted preview link, or show it in person at the workshop:
+      </p>
+
+      <textarea id="pitchScriptTextarea" rows="8" readonly class="w-full p-3.5 rounded-xl bg-slate-50 border border-slate-300 text-xs sm:text-sm text-slate-800 font-mono leading-relaxed focus:outline-none"></textarea>
+
+      <div class="flex flex-wrap items-center justify-between gap-3 pt-1">
+        <button type="button" onclick="copyPitchScript()" class="inline-flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-4 py-2.5 rounded-xl text-xs sm:text-sm transition">
+          <i data-lucide="copy" class="w-4 h-4"></i>
+          Copy Pitch Message
+        </button>
+        <button type="button" onclick="closePitchModal()" class="px-4 py-2.5 rounded-xl border border-slate-300 text-slate-700 font-semibold text-xs sm:text-sm hover:bg-slate-100">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toastBanner" class="hidden fixed bottom-5 right-5 z-50 bg-slate-900 text-white border border-amber-400/50 px-4 py-3 rounded-xl shadow-2xl text-xs sm:text-sm font-medium flex items-center gap-2">
+    <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
+    <span id="toastText">Copied to clipboard!</span>
+  </div>
+
+  <script>
+    // 100% Tool-Verified Garage Profiles (from Google Maps & Justdial ECIL / Kapra listings)
+    const GARAGE_PROFILES = {
+      metro: {
+        id: 'metro',
+        badge: 'MC',
+        name: 'Metro Car Care',
+        estYear: 'Est. 2012',
+        areaShort: 'Ayodhya Nagar Rd · AS Rao Nagar, ECIL',
+        areaHeadline: 'ECIL & AS Rao Nagar',
+        rating: '4.9 / 5.0',
+        reviewCountText: '84 Verified Google Reviews',
+        reviewsSubText: 'Rated 4.9/5 across 84 Google Maps reviews and 78 Justdial ratings for genuine spare parts and timely delivery.',
+        specialistName: 'Chinna Babu (Lead Multi-Brand Mechanic)',
+        subheadline: 'Led by senior mechanic Chinna Babu since 2012. We use 100% genuine spare parts with transparent diagnosis—from periodic oil service and car AC repair to urgent night-breakdown recovery.',
+        feature2Title: 'Emergency Support',
+        feature2Sub: 'Prompt breakdown assistance',
+        phoneDisplay: '093984 46424',
+        phoneIntl: '+91 93984 46424',
+        phoneHref: 'tel:+919398446424',
+        waNumber: '919398446424',
+        address: 'Plot No. 155, 1-19-79, Ayodhya Nagar Rd, Trimulgherry - ECIL Rd (Near Hi-Tension Road), Lakshmipuram Colony, AS Rao Nagar, ECIL Post, Secunderabad, Telangana 500062',
+        hoursSummary: 'Mon–Sat: 8:00 AM – 9:00 PM · Sun: 9:00 AM – 5:00 PM',
+        hoursList: [
+          { day: 'Monday – Saturday', time: '8:00 AM – 9:00 PM' },
+          { day: 'Sunday', time: '9:00 AM – 5:00 PM' },
+          { day: 'Breakdown Support', time: 'On-Call Emergency Assistance' }
+        ],
+        mapsQueryUrl: 'https://www.google.com/maps/search/?api=1&query=Metro+Car+Care+Ayodhya+Nagar+Rd+AS+Rao+Nagar+ECIL+Secunderabad',
+        justdialUrl: 'https://www.justdial.com/Hyderabad/Metro-Car-Care-Ecil/040PXX40-XX40-260426045013-N5D9_BZDET',
+        landmarkTip: 'First-time visitors sometimes note our inner lane is tricky to spot—turn onto Ayodhya Nagar Road near Hi-Tension Road off the Trimulgherry–ECIL main road in Lakshmipuram Colony, or tap below for direct Google Maps navigation.',
+        featuredQuote: '"Our car broke down in the night, but Chinna was prompt in helping us middle of the night and got the car fixed in a day and he worked on a Sunday overtime to get it fixed, great commitment towards the job and flawless job done!"',
+        featuredQuoteMeta: '— Verified Google Maps Review · February 2026',
+        pitchTitle: 'WhatsApp Pitch for Metro Car Care (Chinna Babu)',
+        pitchScript: `Namaste Chinna Babu garu! 🙏\n\nI live nearby in the Secunderabad/ECIL area and saw Metro Car Care's awesome 4.9★ rating (84+ reviews!) on Google Maps.\n\nI noticed a couple of things on your Google listing:\n1) There is no website link attached yet.\n2) One recent reviewer mentioned the garage is great but "a bit tricky to locate" for first-time customers.\n\nSo I built a ready-to-use mobile website preview specifically for Metro Car Care with your service rate card, a live cost calculator, a direct WhatsApp booking button, and landmark directions near Hi-Tension Road / Ayodhya Nagar Rd.\n\nCan I share the live preview link here for you to check on your phone? No obligation at all!`,
+        reviews: [
+          {
+            quote: 'Our car broke down in the night, but Chinna was prompt in helping us middle of the night and got the car fixed in a day and he worked on a Sunday overtime to get it fixed, great commitment towards the job and flawless job done!',
+            date: 'February 2026',
+            tag: 'Emergency & Promptness',
+            highlight: 'Night Breakdown & Sunday Turnaround'
+          },
+          {
+            quote: 'I gave my car here for servicing when it was really emergency. Chinna babu is the mechanic here. He has very good knowledge on cars n brands. Uses only genuine spare parts n his work is efficient. Amazing work.',
+            date: 'February 2026',
+            tag: 'Quality & Fair Pricing',
+            highlight: '100% Genuine Spare Parts'
+          },
+          {
+            quote: 'Best mechanic in ECIL, reasonable prices, genuine mechanical works.',
+            date: 'March 2026',
+            tag: 'Quality & Fair Pricing',
+            highlight: 'Reasonable Local Pricing'
+          },
+          {
+            quote: 'He explained the issues clearly, carried out the work efficiently, and made sure everything was checked properly before handing over the car.',
+            date: 'August 2026',
+            tag: 'Quality & Fair Pricing',
+            highlight: 'Transparent Issue Explanation'
+          },
+          {
+            quote: 'Great service experience, garage is a bit tricky to locate, but the staff is knowledgeable and performs their job diligently.',
+            date: 'September 2026',
+            tag: 'Emergency & Promptness',
+            highlight: 'Diligent & Knowledgeable Staff'
+          },
+          {
+            quote: 'For Car service purpose the best plase to do car service and compare to others reasonable price they taken I am very satisfied what they doing.',
+            date: 'April 2026',
+            tag: 'Quality & Fair Pricing',
+            highlight: 'Value for Money Periodic Service'
+          }
+        ]
+      },
+      gokul: {
+        id: 'gokul',
+        badge: 'GM',
+        name: 'Gokul Motors',
+        estYear: 'Est. 2010',
+        areaShort: 'O.U.T. Colony, Kapra–Saket Rd · ECIL',
+        areaHeadline: 'Kapra & Saket Road (ECIL)',
+        rating: '4.4 / 5.0',
+        reviewCountText: '166 Verified Google Reviews',
+        reviewsSubText: 'Rated 4.4/5 across 166 Google Maps reviews and 175 Justdial ratings for prompt home pickup, PMS, and accident body repair.',
+        specialistName: 'Ram (Service Advisor & Body Shop Coordinator)',
+        subheadline: 'Established multi-brand car workshop near Saket Towers, Kapra–ECIL. Specializing in periodic maintenance (PMS), home pickup & drop, accident denting/painting, and complete mechanical overhauls.',
+        feature2Title: 'Home Pickup & Drop',
+        feature2Sub: 'Prompt doorstep assessment',
+        phoneDisplay: '079893 10847',
+        phoneIntl: '+91 79893 10847',
+        phoneHref: 'tel:+917989310847',
+        waNumber: '917989310847',
+        address: 'Plot No. 01, O.U.T. Colony, Yellareddyguda, Near Saket Towers, Kapra - Saket Rd, ECIL Post, Hyderabad, Telangana 500103',
+        hoursSummary: 'Mon–Sat: 9:00 AM – 7:30 PM · Sun: 9:00 AM – 1:00 PM',
+        hoursList: [
+          { day: 'Monday – Saturday', time: '9:00 AM – 7:30 PM' },
+          { day: 'Sunday', time: '9:00 AM – 1:00 PM' },
+          { day: 'Home Pickup Service', time: 'Available Across ECIL, Kapra & Sainikpuri' }
+        ],
+        mapsQueryUrl: 'https://www.google.com/maps/search/?api=1&query=Gokul+Motors+OUT+Colony+Yellareddyguda+Kapra+Saket+Road+ECIL+Hyderabad',
+        justdialUrl: 'https://www.justdial.com/Hyderabad/Gokul-Motors-Nearby-Saket-Towers-Kapra/040PXX40-XX40-190109190859-E1J9_BZDET',
+        landmarkTip: 'Conveniently located at Plot No. 01, O.U.T. Colony, Yellareddyguda on the Kapra–Saket Main Road (right near Saket Towers) with wheelchair-accessible parking and on-site service bays.',
+        featuredQuote: '"The pickup person reached home promptly car assed in the a short time service and repair done within the stipulated time."',
+        featuredQuoteMeta: '— Verified Google Maps Review · December 2025',
+        pitchTitle: 'WhatsApp Pitch for Gokul Motors (Ram / Kapra–ECIL)',
+        pitchScript: `Namaste Ram garu! 🙏\n\nI saw Gokul Motors on Google Maps (166+ reviews near Saket Towers, Kapra–ECIL!) and noticed your listing requires appointments but doesn't have an official website link attached yet.\n\nMany car owners in Saket, Kapra, and AS Rao Nagar search online to book home pickup or check denting/painting and periodic service packages. I put together a working 1-page website preview for Gokul Motors with an interactive service cost estimator and direct WhatsApp booking button.\n\nMay I share the preview link here so you can try it on your phone?`,
+        reviews: [
+          {
+            quote: 'The pickup person reached home promptly car assed in the a short time service and repair done within the stipulated time.',
+            date: 'December 2025',
+            tag: 'Emergency & Promptness',
+            highlight: 'Prompt Doorstep Pickup & Delivery'
+          },
+          {
+            quote: 'Given my car for repair post accident at Gokul motors, They have given back car in good shape .Very happy with their work ,communication was easier with Ram',
+            date: 'January 2024',
+            tag: 'Quality & Fair Pricing',
+            highlight: 'Accident Body Repair & Clear Updates'
+          },
+          {
+            quote: 'Work perfection and provide timely resolution/ clarification on the vehicle problems',
+            date: 'February 2024',
+            tag: 'Emergency & Promptness',
+            highlight: 'Timely Diagnostics & Resolution'
+          },
+          {
+            quote: 'Very satisfied with the repair work and pms done on my car.',
+            date: 'November 2023',
+            tag: 'Quality & Fair Pricing',
+            highlight: 'Thorough Periodic Maintenance (PMS)'
+          }
+        ]
+      }
+    };
+
+    // Tool-Verified Service Rate Card (from Justdial service catalogue for Metro Car Care & Gokul Motors, ECIL)
+    const SERVICES_CATALOG = [
+      {
+        id: 'regular_service',
+        name: 'Car Regular Periodic Service',
+        category: 'Routine & Wash',
+        basePrice: 1000,
+        unitLabel: 'onwards / service',
+        icon: 'wrench',
+        popular: true,
+        desc: 'Engine oil & filter change check, fluid top-ups, brake inspection, air filter cleaning, and 30-point safety check.'
+      },
+      {
+        id: 'car_wash',
+        name: 'Car Wash & Interior Vacuuming',
+        category: 'Routine & Wash',
+        basePrice: 250,
+        unitLabel: 'onwards / service',
+        icon: 'sparkles',
+        popular: true,
+        desc: 'High-pressure exterior foam wash, underbody mud rinse, interior vacuum cleaning, dashboard polish, and tyre dressing.'
+      },
+      {
+        id: 'mechanical_repairs',
+        name: 'Car Mechanical Repairs & Diagnostics',
+        category: 'Mechanical & AC',
+        basePrice: 499,
+        unitLabel: 'onwards / service',
+        icon: 'cog',
+        popular: true,
+        desc: 'Engine troubleshooting, brake pad/shoe replacement, coolant leak fix, timing belt inspection, and genuine OEM part fitment.'
+      },
+      {
+        id: 'ac_repair',
+        name: 'Car AC Repair & Gas Recharge',
+        category: 'Mechanical & AC',
+        basePrice: 1000,
+        unitLabel: 'onwards / service',
+        icon: 'thermometer-snowflake',
+        popular: true,
+        desc: 'AC cooling coil inspection, refrigerant gas top-up, compressor & condenser check, and cabin filter sanitizing.'
+      },
+      {
+        id: 'denting_painting',
+        name: 'Car Denting & Painting Service',
+        category: 'Body, Electrical & Tyres',
+        basePrice: 1000,
+        unitLabel: 'onwards / panel',
+        icon: 'paintbrush',
+        popular: false,
+        desc: 'Panel dent removal, scratch repair, primer & color-matched booth painting, bumper repair, and rubbing polish.'
+      },
+      {
+        id: 'suspension_fitment',
+        name: 'Car Suspension & Steering Fitment',
+        category: 'Mechanical & AC',
+        basePrice: 500,
+        unitLabel: 'onwards / service',
+        icon: 'git-commit-vertical',
+        popular: false,
+        desc: 'Shock absorber check, lower arm & link rod bush replacement, steering rack inspection, and ride-noise elimination.'
+      },
+      {
+        id: 'clutch_body',
+        name: 'Car Clutch & Transmission Overhaul',
+        category: 'Mechanical & AC',
+        basePrice: 300,
+        unitLabel: 'onwards / inspection',
+        icon: 'disc',
+        popular: false,
+        desc: 'Clutch plate & pressure plate inspection, flywheel check, gear cable adjustment, and smooth gear-shift restoration.'
+      },
+      {
+        id: 'battery_service',
+        name: 'Car Battery Repair & Replacement',
+        category: 'Body, Electrical & Tyres',
+        basePrice: 300,
+        unitLabel: 'onwards / service',
+        icon: 'battery-charging',
+        popular: false,
+        desc: 'Alternator & battery voltage load testing, terminal corrosion cleaning, jump-start recovery, and new battery installation.'
+      },
+      {
+        id: 'lights_fittings',
+        name: 'Car Lights & Electrical Fittings',
+        category: 'Body, Electrical & Tyres',
+        basePrice: 300,
+        unitLabel: 'onwards / service',
+        icon: 'lightbulb',
+        popular: false,
+        desc: 'Headlight & taillight bulb replacement, fuse box diagnosis, power window repair, horn, and wiper motor service.'
+      },
+      {
+        id: 'tyre_wheel',
+        name: 'Car Tyre & Wheel Care Services',
+        category: 'Body, Electrical & Tyres',
+        basePrice: 300,
+        unitLabel: 'onwards / service',
+        icon: 'circle-dot',
+        popular: false,
+        desc: 'Wheel rotation, tyre tread & puncture inspection, hub greasing, and brake caliper check for smooth highway stability.'
+      }
+    ];
+
+    const VEHICLE_SEGMENTS = {
+      hatchback: { label: 'Hatchback (1.0x)', multiplier: 1.0 },
+      sedan: { label: 'Sedan / Compact SUV (1.15x)', multiplier: 1.15 },
+      suv: { label: 'SUV / MPV (1.35x)', multiplier: 1.35 }
+    };
+
+    // In-Memory Application State
+    let appState = {
+      activeGarageId: 'metro',
+      serviceCategory: 'all',
+      serviceSearchQuery: '',
+      vehicleSegment: 'hatchback',
+      selectedServiceIds: ['regular_service', 'car_wash'],
+      reviewFilter: 'all',
+      lastGeneratedMessage: ''
+    };
+
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toastBanner');
+      const text = document.getElementById('toastText');
+      if (!toast || !text) return;
+      text.textContent = msg;
+      toast.classList.remove('hidden');
+      if (window._toastTimer) clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 3200);
+    }
+
+    function copyTextToClipboard(str, successMsg) {
+      const fallbackCopy = () => {
+        const ta = document.createElement('textarea');
+        ta.value = str;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+          document.execCommand('copy');
+          showToast(successMsg);
+        } catch (err) {
+          showToast('Press Ctrl+C to copy the selected text.');
+        }
+        document.body.removeChild(ta);
+      };
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(str).then(() => {
+          showToast(successMsg);
+        }).catch(fallbackCopy);
+      } else {
+        fallbackCopy();
+      }
+    }
+
+    function togglePitchToolbar(show) {
+      const bar = document.getElementById('pitchToolbar');
+      const restoreBtn = document.getElementById('restorePitchBtn');
+      if (show) {
+        bar.classList.remove('hidden');
+        restoreBtn.classList.add('hidden');
+      } else {
+        bar.classList.add('hidden');
+        restoreBtn.classList.remove('hidden');
+        showToast('Client View enabled — pitch bar hidden.');
+      }
+    }
+
+    function openPitchModal() {
+      const profile = GARAGE_PROFILES[appState.activeGarageId];
+      document.getElementById('pitchModalTitle').textContent = profile.pitchTitle;
+      document.getElementById('pitchScriptTextarea').value = profile.pitchScript;
+      document.getElementById('pitchModal').classList.remove('hidden');
+    }
+
+    function closePitchModal() {
+      document.getElementById('pitchModal').classList.add('hidden');
+    }
+
+    function copyPitchScript() {
+      const profile = GARAGE_PROFILES[appState.activeGarageId];
+      copyTextToClipboard(profile.pitchScript, `Copied WhatsApp pitch for ${profile.name}!`);
+    }
+
+    function switchGarageProfile(garageId) {
+      if (!GARAGE_PROFILES[garageId]) return;
+      appState.activeGarageId = garageId;
+      appState.reviewFilter = 'all';
+
+      // Update toolbar buttons
+      const btnMetro = document.getElementById('btnProfileMetro');
+      const btnGokul = document.getElementById('btnProfileGokul');
+      if (garageId === 'metro') {
+        btnMetro.className = 'px-3 py-1 rounded-md font-semibold text-xs transition bg-amber-400 text-slate-950 shadow-sm';
+        btnGokul.className = 'px-3 py-1 rounded-md font-semibold text-xs transition text-indigo-200 hover:text-white';
+      } else {
+        btnGokul.className = 'px-3 py-1 rounded-md font-semibold text-xs transition bg-amber-400 text-slate-950 shadow-sm';
+        btnMetro.className = 'px-3 py-1 rounded-md font-semibold text-xs transition text-indigo-200 hover:text-white';
+      }
+
+      renderGarageProfile();
+      renderReviews();
+      renderEstimator();
+      showToast(`Switched preview to ${GARAGE_PROFILES[garageId].name} (ECIL)`);
+    }
+
+    function renderGarageProfile() {
+      const p = GARAGE_PROFILES[appState.activeGarageId];
+      document.title = `${p.name} — Multi-Brand Auto Workshop in ECIL, Secunderabad`;
+
+      document.getElementById('navLogoBadge').textContent = p.badge;
+      document.getElementById('navBrandName').textContent = p.name;
+      document.getElementById('navEstBadge').textContent = p.estYear;
+      document.getElementById('navAreaSub').textContent = p.areaShort;
+
+      document.getElementById('headerCallLink').href = p.phoneHref;
+      document.getElementById('headerPhoneText').textContent = p.phoneDisplay;
+
+      document.getElementById('heroRatingVal').textContent = p.rating;
+      document.getElementById('heroReviewCount').textContent = p.reviewCountText;
+      document.getElementById('heroHeadline').innerHTML = `Trusted Multi-Brand Car Servicing &amp; Repairs in <span class="text-amber-400">${p.areaHeadline}</span>`;
+      document.getElementById('heroSubheadline').textContent = p.subheadline;
+      document.getElementById('heroFeature2Title').textContent = p.feature2Title;
+      document.getElementById('heroFeature2Sub').textContent = p.feature2Sub;
+
+      const waIntro = encodeURIComponent(`Hi ${p.name}, I found your website and would like to enquire about car servicing in ECIL.`);
+      document.getElementById('heroWhatsAppDirect').href = `https://wa.me/${p.waNumber}?text=${waIntro}`;
+
+      document.getElementById('cardGarageTitle').textContent = `${p.name} · ECIL`;
+      document.getElementById('cardAddress').textContent = p.address;
+      document.getElementById('cardSpecialist').textContent = p.specialistName;
+      document.getElementById('cardHours').textContent = p.hoursSummary;
+      document.getElementById('cardQuoteText').textContent = p.featuredQuote;
+      document.getElementById('cardQuoteMeta').textContent = p.featuredQuoteMeta;
+      document.getElementById('cardCallBtn').href = p.phoneHref;
+      document.getElementById('cardMapsBtn').href = p.mapsQueryUrl;
+
+      document.getElementById('estimatorGarageName').textContent = p.name;
+      document.getElementById('reviewsAreaLabel').textContent = p.areaHeadline;
+      document.getElementById('reviewsSubLabel').textContent = p.reviewsSubText;
+
+      document.getElementById('locHeading').textContent = `Visit ${p.name} in ECIL`;
+      document.getElementById('locLandmarkTip').textContent = p.landmarkTip;
+      document.getElementById('locFullAddress').textContent = p.address;
+      document.getElementById('locPhoneDisplay').textContent = p.phoneIntl;
+      document.getElementById('locDirectoryLink').href = p.justdialUrl;
+      document.getElementById('locGoogleMapsBtn').href = p.mapsQueryUrl;
+
+      const waPinText = encodeURIComponent(`Hi ${p.name}, please share your Google Maps workshop location pin.`);
+      document.getElementById('locWhatsAppPinBtn').href = `https://wa.me/${p.waNumber}?text=${waPinText}`;
+
+      const hoursHtml = p.hoursList.map(h => `
+        <div class="flex items-center justify-between py-2 border-b border-slate-800/80">
+          <span class="text-slate-300 font-medium">${h.day}</span>
+          <span class="text-amber-400 font-bold">${h.time}</span>
+        </div>
+      `).join('');
+      document.getElementById('hoursTableContainer').innerHTML = hoursHtml;
+
+      document.getElementById('footerBrandName').textContent = p.name;
+      document.getElementById('footerJustdialLink').href = p.justdialUrl;
+      document.getElementById('footerCallLink').href = p.phoneHref;
+    }
+
+    function setServiceCategory(cat) {
+      appState.serviceCategory = cat;
+      document.querySelectorAll('.cat-pill').forEach(btn => {
+        if (btn.getAttribute('data-cat') === cat) {
+          btn.className = 'cat-pill px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-900 text-white shadow-sm';
+        } else {
+          btn.className = 'cat-pill px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-white text-slate-700 border border-slate-200 hover:bg-slate-100';
+        }
+      });
+      renderServicesGrid();
+    }
+
+    function handleServiceSearch(val) {
+      appState.serviceSearchQuery = (val || '').trim().toLowerCase();
+      renderServicesGrid();
+    }
+
+    function toggleServiceSelection(serviceId) {
+      const idx = appState.selectedServiceIds.indexOf(serviceId);
+      if (idx > -1) {
+        appState.selectedServiceIds.splice(idx, 1);
+      } else {
+        appState.selectedServiceIds.push(serviceId);
+      }
+      renderServicesGrid();
+      renderEstimator();
+    }
+
+    function clearSelectedServices() {
+      appState.selectedServiceIds = [];
+      renderServicesGrid();
+      renderEstimator();
+      showToast('Estimate selection cleared.');
+    }
+
+    function setVehicleSegment(segKey) {
+      if (!VEHICLE_SEGMENTS[segKey]) return;
+      appState.vehicleSegment = segKey;
+      document.querySelectorAll('.seg-btn').forEach(btn => {
+        const isCurrent = btn.getAttribute('data-seg') === segKey;
+        if (isCurrent) {
+          btn.className = 'seg-btn p-3.5 rounded-xl border text-left transition bg-amber-500 text-slate-950 border-amber-400 font-bold';
+        } else {
+          btn.className = 'seg-btn p-3.5 rounded-xl border text-left transition bg-slate-900/70 text-slate-200 border-slate-700 hover:border-slate-500';
+        }
+      });
+      renderServicesGrid();
+      renderEstimator();
+    }
+
+    function getAdjustedPrice(basePrice) {
+      const mult = VEHICLE_SEGMENTS[appState.vehicleSegment].multiplier;
+      return Math.round((basePrice * mult) / 10) * 10;
+    }
+
+    function renderServicesGrid() {
+      const grid = document.getElementById('servicesGrid');
+      const countBadge = document.getElementById('selectedCountBadge');
+      const count = appState.selectedServiceIds.length;
+      countBadge.textContent = `${count} ${count === 1 ? 'service' : 'services'}`;
+
+      const filtered = SERVICES_CATALOG.filter(item => {
+        const matchesCat = appState.serviceCategory === 'all' || item.category === appState.serviceCategory;
+        const matchesQuery = !appState.serviceSearchQuery ||
+          item.name.toLowerCase().includes(appState.serviceSearchQuery) ||
+          item.desc.toLowerCase().includes(appState.serviceSearchQuery) ||
+          item.category.toLowerCase().includes(appState.serviceSearchQuery);
+        return matchesCat && matchesQuery;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full bg-white border border-slate-200 rounded-2xl p-8 text-center space-y-3">
+            <div class="text-slate-500 font-medium">No services matched your search filter.</div>
+            <button type="button" onclick="resetServiceFilters()" class="text-xs font-bold bg-slate-900 text-white px-4 py-2 rounded-xl">
+              Show All 10 Services
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(item => {
+        const isSelected = appState.selectedServiceIds.includes(item.id);
+        const displayPrice = getAdjustedPrice(item.basePrice);
+        return `
+          <div class="card-hover bg-white rounded-2xl p-5 border ${isSelected ? 'border-amber-500 ring-2 ring-amber-500/20' : 'border-slate-200'} flex flex-col justify-between gap-4">
+            <div class="space-y-3">
+              <div class="flex items-start justify-between gap-2">
+                <div class="w-10 h-10 rounded-xl ${isSelected ? 'bg-amber-500 text-slate-950' : 'bg-slate-100 text-slate-700'} flex items-center justify-center shrink-0">
+                  <i data-lucide="${item.icon}" class="w-5 h-5"></i>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  ${item.popular ? '<span class="text-[11px] font-bold uppercase bg-amber-100 text-amber-800 px-2.5 py-0.5 rounded-full">Popular</span>' : ''}
+                  <span class="text-[11px] font-medium bg-slate-100 text-slate-600 px-2.5 py-0.5 rounded-full">${item.category}</span>
+                </div>
+              </div>
+              <div>
+                <h3 class="font-bold text-base sm:text-lg text-slate-900">${item.name}</h3>
+                <p class="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">${item.desc}</p>
+              </div>
+            </div>
+
+            <div class="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+              <div>
+                <div class="text-lg font-extrabold text-slate-900">₹${displayPrice.toLocaleString('en-IN')}</div>
+                <div class="text-[11px] text-slate-500">${item.unitLabel}</div>
+              </div>
+              <button
+                type="button"
+                onclick="toggleServiceSelection('${item.id}')"
+                class="px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+                  isSelected
+                    ? 'bg-emerald-600 text-white hover:bg-emerald-500'
+                    : 'bg-slate-900 text-white hover:bg-slate-800'
+                }"
+              >
+                <i data-lucide="${isSelected ? 'check' : 'plus'}" class="w-3.5 h-3.5"></i>
+                <span>${isSelected ? 'Added to Estimate' : 'Add to Estimate'}</span>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      if (window.lucide) {
+        window.lucide.createIcons();
+      }
+    }
+
+    function resetServiceFilters() {
+      appState.serviceCategory = 'all';
+      appState.serviceSearchQuery = '';
+      const searchInput = document.getElementById('serviceSearchInput');
+      if (searchInput) searchInput.value = '';
+      setServiceCategory('all');
+    }
+
+    function renderEstimator() {
+      const checklistEl = document.getElementById('estimatorChecklist');
+      const breakdownEl = document.getElementById('estimateBreakdownList');
+      const totalEl = document.getElementById('liveEstimateTotal');
+      const badgeEl = document.getElementById('liveVehicleBadge');
+
+      const segInfo = VEHICLE_SEGMENTS[appState.vehicleSegment];
+      badgeEl.textContent = segInfo.label;
+
+      // Render Checklist
+      checklistEl.innerHTML = SERVICES_CATALOG.map(item => {
+        const isSelected = appState.selectedServiceIds.includes(item.id);
+        const adjPrice = getAdjustedPrice(item.basePrice);
+        return `
+          <button
+            type="button"
+            onclick="toggleServiceSelection('${item.id}')"
+            class="flex items-center justify-between gap-2 p-2.5 rounded-xl border text-left transition text-xs ${
+              isSelected
+                ? 'bg-amber-500/15 border-amber-400 text-white font-semibold'
+                : 'bg-slate-900/60 border-slate-700/80 text-slate-300 hover:border-slate-500'
+            }"
+          >
+            <div class="flex items-center gap-2 truncate">
+              <span class="w-4 h-4 rounded flex items-center justify-center ${isSelected ? 'bg-amber-400 text-slate-950' : 'border border-slate-600'}">
+                ${isSelected ? '✓' : ''}
+              </span>
+              <span class="truncate">${item.name}</span>
+            </div>
+            <span class="text-amber-400 font-bold shrink-0">₹${adjPrice}</span>
+          </button>
+        `;
+      }).join('');
+
+      // Render Breakdown & Sum
+      const selectedItems = SERVICES_CATALOG.filter(s => appState.selectedServiceIds.includes(s.id));
+      if (selectedItems.length === 0) {
+        totalEl.textContent = '₹0 (Select Services)';
+        breakdownEl.innerHTML = `<div class="text-slate-400 italic py-2">No services selected yet. Click any service card or checkbox to calculate your starting estimate.</div>`;
+        return;
+      }
+
+      let sum = 0;
+      breakdownEl.innerHTML = selectedItems.map(item => {
+        const price = getAdjustedPrice(item.basePrice);
+        sum += price;
+        return `
+          <div class="flex items-center justify-between py-1 border-b border-slate-700/60">
+            <span class="text-slate-200">${item.name}</span>
+            <span class="font-bold text-amber-300">₹${price.toLocaleString('en-IN')}+</span>
+          </div>
+        `;
+      }).join('');
+
+      totalEl.textContent = `₹${sum.toLocaleString('en-IN')} onwards`;
+    }
+
+    function setReviewFilter(filterVal) {
+      appState.reviewFilter = filterVal;
+      document.querySelectorAll('.rev-pill').forEach(btn => {
+        if (btn.getAttribute('data-rfilter') === filterVal) {
+          btn.className = 'rev-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-900 text-white';
+        } else {
+          btn.className = 'rev-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-white text-slate-700 border border-slate-200 hover:bg-slate-100';
+        }
+      });
+      renderReviews();
+    }
+
+    function renderReviews() {
+      const profile = GARAGE_PROFILES[appState.activeGarageId];
+      const grid = document.getElementById('reviewsGrid');
+      const reviews = profile.reviews.filter(r => appState.reviewFilter === 'all' || r.tag === appState.reviewFilter);
+
+      grid.innerHTML = reviews.map(r => `
+        <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm flex flex-col justify-between gap-4">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex items-center gap-1 text-amber-500 text-xs font-bold">
+                <span>★★★★★</span>
+                <span class="text-slate-700 ml-1">5.0</span>
+              </div>
+              <span class="text-[11px] font-semibold bg-slate-100 text-slate-700 px-2.5 py-0.5 rounded-full">${r.highlight}</span>
+            </div>
+            <p class="text-slate-700 text-xs sm:text-sm leading-relaxed italic">"${r.quote}"</p>
+          </div>
+          <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500 font-medium">
+            <span>Verified Google Maps Customer</span>
+            <span>${r.date}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function handleWhatsAppBooking() {
+      const p = GARAGE_PROFILES[appState.activeGarageId];
+      const name = (document.getElementById('custName').value || '').trim() || 'Car Owner (ECIL)';
+      const phone = (document.getElementById('custPhone').value || '').trim() || 'Not provided';
+      const carModel = (document.getElementById('carModel').value || '').trim() || 'Multi-Brand Car';
+      const mode = document.getElementById('serviceMode').value;
+      const notes = (document.getElementById('custNotes').value || '').trim() || 'Standard inspection';
+
+      const selectedItems = SERVICES_CATALOG.filter(s => appState.selectedServiceIds.includes(s.id));
+      const segInfo = VEHICLE_SEGMENTS[appState.vehicleSegment];
+
+      let total = 0;
+      const serviceLines = selectedItems.length > 0
+        ? selectedItems.map(s => {
+            const pr = getAdjustedPrice(s.basePrice);
+            total += pr;
+            return `• ${s.name} (₹${pr}+)`;
+          }).join('\n')
+        : '• General Car Inspection & Estimate';
+
+      const msg = [
+        `Hello *${p.name}* (ECIL), I would like to book a car service slot:`,
+        ``,
+        `*Customer:* ${name} (${phone})`,
+        `*Vehicle:* ${carModel} [${segInfo.label}]`,
+        `*Service Mode:* ${mode}`,
+        `*Requested Services:*`,
+        serviceLines,
+        selectedItems.length > 0 ? `*Estimated Starting Total:* ₹${total.toLocaleString('en-IN')} onwards` : '',
+        `*Notes / Timing:* ${notes}`
+      ].filter(Boolean).join('\n');
+
+      appState.lastGeneratedMessage = msg;
+
+      const waUrl = `https://wa.me/${p.waNumber}?text=${encodeURIComponent(msg)}`;
+      document.getElementById('bookingMessagePreview').textContent = msg;
+      document.getElementById('directWaLaunchLink').href = waUrl;
+      document.getElementById('bookingConfirmationBox').classList.remove('hidden');
+
+      showToast('Booking message prepared! Opening WhatsApp link...');
+    }
+
+    function copyGeneratedBookingText() {
+      if (!appState.lastGeneratedMessage) return;
+      copyTextToClipboard(appState.lastGeneratedMessage, 'Booking details copied to clipboard!');
+    }
+
+    // Initialize App on Load
+    window.addEventListener('DOMContentLoaded', () => {
+      renderGarageProfile();
+      renderServicesGrid();
+      renderEstimator();
+      renderReviews();
+      if (window.lucide) {
+        window.lucide.createIcons();
+      }
+    });
+  </script>
+</body>
+</html>
